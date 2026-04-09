@@ -115,10 +115,12 @@ public class AdminLoginJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
        String user = UserTextfield.getText();
-       String password = PasswordTextfield.getText();
-       DB.loadConnection("mysql", user, password );
+       String pass = PasswordTextfield.getText();
+       DB.loadConnection("bytebitetestrun", user, pass );
+       
        new AdminDashboard().setVisible(true);
         this.dispose();
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void UserTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserTextfieldActionPerformed
