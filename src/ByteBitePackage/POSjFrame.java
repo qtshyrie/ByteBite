@@ -31,7 +31,7 @@ public class POSjFrame extends javax.swing.JFrame {
      */
     public POSjFrame() {
         initComponents();
-        DB.loadConnection("bytebitetestrun", "admin", "1234");
+        DB.loadConnection("bytebitetestrun", "paul", "1234");
         DashBCartJList.setModel(new DefaultListModel<>());
 
         DashBJbtnDelList.addActionListener(e -> {
@@ -109,7 +109,6 @@ public class POSjFrame extends javax.swing.JFrame {
         leftpanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("All Items");
 
         DashBJbtnFoods.setText("FOODS");
@@ -170,7 +169,6 @@ public class POSjFrame extends javax.swing.JFrame {
         NestedMiddlePanel.setLayout(new java.awt.GridLayout(0, 3, 10, 10));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("FOODS");
 
         javax.swing.GroupLayout centerpanelLayout = new javax.swing.GroupLayout(centerpanel);
@@ -178,20 +176,21 @@ public class POSjFrame extends javax.swing.JFrame {
         centerpanelLayout.setHorizontalGroup(
             centerpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centerpanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(NestedMiddlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerpanelLayout.createSequentialGroup()
-                .addContainerGap(343, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(321, 321, 321))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(centerpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerpanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(321, 321, 321))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerpanelLayout.createSequentialGroup()
+                        .addComponent(NestedMiddlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         centerpanelLayout.setVerticalGroup(
             centerpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centerpanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(NestedMiddlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -200,7 +199,6 @@ public class POSjFrame extends javax.swing.JFrame {
         rightpanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("CART");
 
@@ -208,44 +206,33 @@ public class POSjFrame extends javax.swing.JFrame {
         DashBJbtnCancel.setText("Cancel");
 
         DashBJbtnCheckout.setFont(new java.awt.Font("Sylfaen", 1, 14)); // NOI18N
-        DashBJbtnCheckout.setText("Checkpout");
         DashBJbtnCheckout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel11.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel7.setFont(new java.awt.Font("Sylfaen", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("ORDER RECIEPT");
 
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Oreder ID:");
 
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Date:");
 
         jLabel10.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Product Discount");
 
         jLabel11.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Sub Total");
 
         jLabel12.setFont(new java.awt.Font("Sylfaen", 0, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Total");
 
         DashBJLabelPD.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
-        DashBJLabelPD.setForeground(new java.awt.Color(0, 0, 0));
         DashBJLabelPD.setText("300");
 
         DashBJLabelTotal.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
-        DashBJLabelTotal.setForeground(new java.awt.Color(0, 0, 0));
         DashBJLabelTotal.setText("300");
 
         DashBJLabelSB.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
-        DashBJLabelSB.setForeground(new java.awt.Color(0, 0, 0));
         DashBJLabelSB.setText("0");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -253,7 +240,7 @@ public class POSjFrame extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(161, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addGap(46, 46, 46))
             .addComponent(jSeparator5)
@@ -321,7 +308,6 @@ public class POSjFrame extends javax.swing.JFrame {
         jScrollPane3.setViewportView(DashBCartJList);
 
         DashBJbtnDelList.setBackground(new java.awt.Color(255, 51, 51));
-        DashBJbtnDelList.setForeground(new java.awt.Color(0, 0, 0));
         DashBJbtnDelList.setText("Delete");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
@@ -388,7 +374,6 @@ public class POSjFrame extends javax.swing.JFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ByteBite");
 
@@ -405,9 +390,9 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addComponent(rightpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(664, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(355, 355, 355))
+                .addGap(542, 542, 542))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,7 +407,7 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1160, 810));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1320, 810));
 
         pack();
         setLocationRelativeTo(null);
