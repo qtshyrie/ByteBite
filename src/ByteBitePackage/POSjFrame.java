@@ -175,8 +175,9 @@ public class POSjFrame extends javax.swing.JFrame {
         rightpanel.add(DashBJbtnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 701, -1, -1));
 
         DashBJbtnCheckout.setFont(new java.awt.Font("Sylfaen", 1, 14)); // NOI18N
-        DashBJbtnCheckout.setText("Checkpout");
+        DashBJbtnCheckout.setText("Checkout");
         DashBJbtnCheckout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        DashBJbtnCheckout.addActionListener(this::DashBJbtnCheckoutActionPerformed);
         rightpanel.add(DashBJbtnCheckout, new org.netbeans.lib.awtextra.AbsoluteConstraints(86, 701, -1, -1));
         rightpanel.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 343, 172, 4));
 
@@ -335,10 +336,6 @@ public class POSjFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(578, 578, 578)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(leftpanel, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -346,13 +343,17 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rightpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(460, 460, 460)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(leftpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(centerpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
@@ -365,7 +366,7 @@ public class POSjFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void calculate() {
             double subTotal = 0;
 
@@ -382,7 +383,7 @@ public class POSjFrame extends javax.swing.JFrame {
             double total = subTotal + tax - discount;
 
             DashBJLabelSB.setText(String.valueOf(subTotal));
-            jLabelDiscountAmount.setText(discountApplied ? "20%" : "0");
+            jLabelDiscountAmount.setText(discountApplied ? "5%" : "0");
             DashBJLabelTotal.setText(String.valueOf(total));
         }
     
@@ -488,6 +489,7 @@ public class POSjFrame extends javax.swing.JFrame {
 
                 DrinkButton.addActionListener(e -> {
                     cartModel.addElement(name + " - ₱" + price);
+                    calculate();
                 });
 
                 DrinkPanel.add(DrinkLabel, BorderLayout.CENTER);
@@ -520,12 +522,6 @@ public class POSjFrame extends javax.swing.JFrame {
             centerpanel.setLayout(new BorderLayout());
             centerpanel.add(scrollPane, BorderLayout.CENTER);
 
-            if (!(DashBCartJList.getModel() instanceof DefaultListModel)) {
-                DefaultListModel<String> cartModel = new DefaultListModel<>();
-                DashBCartJList.setModel(cartModel);
-            }
-            DefaultListModel<String> cartModel = (DefaultListModel<String>) DashBCartJList.getModel();
-
             String sql = "SELECT * FROM foods WHERE category = 'sides'";
             PreparedStatement pst = DB.con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -545,6 +541,7 @@ public class POSjFrame extends javax.swing.JFrame {
 
                 DrinkButton.addActionListener(e -> {
                     cartModel.addElement(name + " - ₱" + price);
+                    calculate();
                 });
 
                 DrinkPanel.add(DrinkLabel, BorderLayout.CENTER);
@@ -568,7 +565,10 @@ public class POSjFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DashBCartJListPropertyChange
 
     private void DashBJbtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCancelActionPerformed
-        // TODO add your handling code here:
+        DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
+        model.clear();
+        calculate();
+
     }//GEN-LAST:event_DashBJbtnCancelActionPerformed
 
     private void DashBJbtnDelListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnDelListActionPerformed
@@ -586,6 +586,13 @@ public class POSjFrame extends javax.swing.JFrame {
 
     calculate();
     }//GEN-LAST:event_jButtonDiscountActionPerformed
+
+    private void DashBJbtnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCheckoutActionPerformed
+        DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
+        model.clear();
+        calculate();
+        JOptionPane.showMessageDialog(null, "Transaction Complete! Pleasse Go to the counter");
+    }//GEN-LAST:event_DashBJbtnCheckoutActionPerformed
 
     /**
      * @param args the command line arguments
