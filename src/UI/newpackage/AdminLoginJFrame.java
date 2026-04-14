@@ -13,6 +13,7 @@ public class AdminLoginJFrame extends javax.swing.JFrame {
 
     public AdminLoginJFrame() {
         initComponents();
+        DB.loadConnection("bytebitedb", "root", "");
         setResizable(false);
         
     }
@@ -113,11 +114,26 @@ public class AdminLoginJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String user = UserTextfield.getText();
-        String pass = PasswordTextfield.getText();
-        new AdminDashboard().setVisible(true);
-        this.dispose();
-       
+         String user = UserTextfield.getText().trim();
+    String pass = PasswordTextfield.getText().trim();
+
+    try {
+        String sql = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+        java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
+        pst.setString(1, user);
+        pst.setString(2, pass);
+        java.sql.ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            new AdminDashboard().setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid username or password!");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
+    } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void UserTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserTextfieldActionPerformed

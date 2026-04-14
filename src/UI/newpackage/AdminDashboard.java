@@ -24,8 +24,7 @@ public class AdminDashboard extends javax.swing.JFrame {
      */
     public AdminDashboard() {
         initComponents();
-        setResizable(false);
-        DB.loadConnection("bytebitedb", "root", ""); 
+        setResizable(false); 
         DisplayData();
     }
     
