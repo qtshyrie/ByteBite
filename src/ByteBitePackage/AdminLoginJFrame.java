@@ -116,7 +116,7 @@ public class AdminLoginJFrame extends javax.swing.JFrame {
 
        String user = UserTextfield.getText();
        String pass = PasswordTextfield.getText();
-       DB.loadConnection("bytebitetestrun", user, pass );
+       DB.loadConnection("bytebitedb", user, pass );
        
        new AdminDashboard().setVisible(true);
         this.dispose();

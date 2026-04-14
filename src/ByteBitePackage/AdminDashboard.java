@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ByteBitePackage;
+import Conn.DatabaseConn.newpackage.DB;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +22,11 @@ public class AdminDashboard extends javax.swing.JFrame {
     public AdminDashboard() {
         initComponents();
         setResizable(false);
+        
+        DB.loadConnection("bytebitedb", "paul", "1234");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,9 +56,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        lblMonthlySales = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        lblWeeklySales = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        lblDailySales = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -201,6 +212,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel2.setText("Total Monthly Sales");
 
+        lblMonthlySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblMonthlySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMonthlySales.setText("0");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -208,12 +223,18 @@ public class AdminDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 106, Short.MAX_VALUE)
                 .addComponent(jLabel2))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblMonthlySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel2)
-                .addContainerGap(195, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblMonthlySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(153, 255, 153));
@@ -222,6 +243,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel3.setText("Total Weekly Sales");
 
+        lblWeeklySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblWeeklySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblWeeklySales.setText("0");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -229,16 +254,26 @@ public class AdminDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 117, Short.MAX_VALUE)
                 .addComponent(jLabel3))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addComponent(lblWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 153, 153));
         jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.red, null, null));
+
+        lblDailySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblDailySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDailySales.setText("0");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel5.setText("Total Daily Sales");
@@ -250,12 +285,18 @@ public class AdminDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(0, 139, Short.MAX_VALUE)
                 .addComponent(jLabel5))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblDailySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel5)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblDailySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -287,7 +328,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Item Name", "Price", "Date"
+                "ID", "Item Name", "Price", "Date"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -304,7 +345,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             .addGroup(jPanelSalesLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanelSales, "card3");
@@ -318,14 +359,21 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel2.removeAll();
         jPanel2.add(jPanelSales);
         jPanel2.repaint();
-        jPanel2.revalidate();        // TODO add your handling code here:
+        jPanel2.revalidate();
+        
+            
+             
     }//GEN-LAST:event_jButtonSaleActionPerformed
 
     private void jbuttonProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonProductsActionPerformed
-        jPanel2.removeAll();
-        jPanel2.add(jPanelProduct);
-        jPanel2.repaint();
-        jPanel2.revalidate();
+                                           
+    // 1. Show the Sales Panel
+    jPanel2.removeAll();
+    jPanel2.add(jPanelSales);
+    jPanel2.repaint();
+    jPanel2.revalidate();
+   
+  
     }//GEN-LAST:event_jbuttonProductsActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
@@ -345,31 +393,29 @@ public class AdminDashboard extends javax.swing.JFrame {
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jbuttonLogoutActionPerformed
 
+    private static double monthlyTotal = 0;
+    private static double weeklyTotal = 0;
+    private static double dailyTotal = 0;
+
     /**
-     * @param args the command line arguments
+     * This method receives the total from POSjFrame and updates the UI
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public void updateSalesData(double amount) {
+        // 1. Increment totals
+        monthlyTotal += amount;
+        weeklyTotal += amount;
+        dailyTotal += amount;
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
+        // 2. Update the labels (using your specific variable names)
+        lblMonthlySales.setText(String.format("%.2f", monthlyTotal));
+        lblWeeklySales.setText(String.format("%.2f", weeklyTotal));
+        lblDailySales.setText(String.format("%.2f", dailyTotal));
+
+        // 3. Add a row to the sales table (jTable1)
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
+        model.addRow(new Object[]{"ID-" + (model.getRowCount() + 1), "POS Sale", amount, currentDate});
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
@@ -395,6 +441,9 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JTable jTableProducts;
     private javax.swing.JButton jbuttonLogout;
     private javax.swing.JButton jbuttonProducts;
+    private javax.swing.JLabel lblDailySales;
+    private javax.swing.JLabel lblMonthlySales;
+    private javax.swing.JLabel lblWeeklySales;
     private java.awt.TextField textFieldSearchBar;
     // End of variables declaration//GEN-END:variables
 }

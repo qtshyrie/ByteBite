@@ -34,7 +34,7 @@ public class POSjFrame extends javax.swing.JFrame {
     public POSjFrame() {
         initComponents();
         setResizable(false);
-        DB.loadConnection("bytebitetestrun", "admin", "1234");
+        DB.loadConnection("bytebitedb", "paul", "1234");
         DashBCartJList.setModel(cartModel);
         DashBJbtnDelList.addActionListener(e -> {
             DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
@@ -377,7 +377,7 @@ public class POSjFrame extends javax.swing.JFrame {
                     subTotal += Double.parseDouble(parts[1].trim());
                 } catch (Exception ex) {}
             }
-
+            
             double tax = subTotal * 0.12;
             double discount = discountApplied ? subTotal * 0.05 : 0; 
             double total = subTotal + tax - discount;
@@ -572,7 +572,7 @@ public class POSjFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DashBJbtnCancelActionPerformed
 
     private void DashBJbtnDelListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnDelListActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:  
     }//GEN-LAST:event_DashBJbtnDelListActionPerformed
     private boolean discountApplied = false;
     private void jButtonDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscountActionPerformed
@@ -588,21 +588,58 @@ public class POSjFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDiscountActionPerformed
 
     private void DashBJbtnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCheckoutActionPerformed
-        DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
-        model.clear();
+        
+    if (cartModel.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Cart is empty!");
+        return;
+    }
+
+    try {
+        // Loop through every item currently in the cart
+        for (int i = 0; i < cartModel.getSize(); i++) {
+            String itemLine = cartModel.getElementAt(i); // Format: "Burger - ₱150.0"
+            
+            // Split the string to get Name and Price separately
+            String[] parts = itemLine.split(" - ₱");
+            String itemName = parts[0].trim();
+            double itemPrice = Double.parseDouble(parts[1].trim());
+
+            // Save each specific item to the database
+            saveIndividualItem(itemName, itemPrice);
+        }
+
+        // Clear UI after successful checkout
+        cartModel.clear();
         calculate();
-        JOptionPane.showMessageDialog(null, "Transaction Complete! Pleasse Go to the counter");
+        
+        JOptionPane.showMessageDialog(null, "Transaction Complete!");
+        // Note: We removed the code that opens AdminDashboard so you stay on this screen.
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error during checkout: " + e.getMessage());
+    }
+
+
     }//GEN-LAST:event_DashBJbtnCheckoutActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    private void saveIndividualItem(String name, double price) {
+        try {
+            String sql = "INSERT INTO sales (Item Name, Price, Date) VALUES (?, ?, NOW())";
+            java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
+            
+            pst.setString(1, name);
+            pst.setDouble(2, price);
+            pst.executeUpdate();
+        } catch (java.sql.SQLException e) {
+            System.out.println("DB Error: " + e.getMessage());
+        }
+    }
+
+    // 2. The Main Method (Required to run the program)
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -610,14 +647,13 @@ public class POSjFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new POSjFrame().setVisible(true));
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> DashBCartJList;
