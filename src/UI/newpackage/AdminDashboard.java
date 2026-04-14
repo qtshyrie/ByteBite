@@ -25,8 +25,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     public AdminDashboard() {
         initComponents();
         setResizable(false);
+        DB.loadConnection("bytebitedb", "root", ""); 
         DisplayData();
-        DB.loadConnection("bytebitedb", "root", "");
     }
     
     private void DisplayData(){
@@ -89,6 +89,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanelDeleteFunction = new javax.swing.JPanel();
+        jPanelUpdateFunction = new javax.swing.JPanel();
+        jPanelAddFunction = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -116,7 +119,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(356, Short.MAX_VALUE)
+                .addContainerGap(354, Short.MAX_VALUE)
                 .addComponent(jLabelAdminDashboard)
                 .addGap(341, 341, 341))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -182,6 +185,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButtonUpdate.setBackground(new java.awt.Color(204, 204, 204));
         jButtonUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonUpdate.setText("UPDATE");
+        jButtonUpdate.addActionListener(this::jButtonUpdateActionPerformed);
 
         jButtonDelete.setBackground(new java.awt.Color(255, 51, 51));
         jButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -244,8 +248,8 @@ public class AdminDashboard extends javax.swing.JFrame {
                         .addComponent(jButtonDelete)
                         .addComponent(jLabel1))
                     .addComponent(textFieldSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -398,6 +402,45 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel2.add(jPanelSales, "card3");
 
+        javax.swing.GroupLayout jPanelDeleteFunctionLayout = new javax.swing.GroupLayout(jPanelDeleteFunction);
+        jPanelDeleteFunction.setLayout(jPanelDeleteFunctionLayout);
+        jPanelDeleteFunctionLayout.setHorizontalGroup(
+            jPanelDeleteFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1008, Short.MAX_VALUE)
+        );
+        jPanelDeleteFunctionLayout.setVerticalGroup(
+            jPanelDeleteFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 638, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanelDeleteFunction, "card4");
+
+        javax.swing.GroupLayout jPanelUpdateFunctionLayout = new javax.swing.GroupLayout(jPanelUpdateFunction);
+        jPanelUpdateFunction.setLayout(jPanelUpdateFunctionLayout);
+        jPanelUpdateFunctionLayout.setHorizontalGroup(
+            jPanelUpdateFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1008, Short.MAX_VALUE)
+        );
+        jPanelUpdateFunctionLayout.setVerticalGroup(
+            jPanelUpdateFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 638, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanelUpdateFunction, "card4");
+
+        javax.swing.GroupLayout jPanelAddFunctionLayout = new javax.swing.GroupLayout(jPanelAddFunction);
+        jPanelAddFunction.setLayout(jPanelAddFunctionLayout);
+        jPanelAddFunctionLayout.setHorizontalGroup(
+            jPanelAddFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1008, Short.MAX_VALUE)
+        );
+        jPanelAddFunctionLayout.setVerticalGroup(
+            jPanelAddFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 638, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanelAddFunction, "card4");
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 1010, 640));
 
         pack();
@@ -420,7 +463,10 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jbuttonProductsActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        // TODO add your handling code here:
+        jPanel2.removeAll();
+        jPanel2.add(jPanelDeleteFunction);  // not jPanelSales!
+        jPanel2.repaint();
+        jPanel2.revalidate();
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void textFieldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSearchBarActionPerformed
@@ -429,12 +475,12 @@ public class AdminDashboard extends javax.swing.JFrame {
             try {
                 String sql = "SELECT id, foods, category, price, status FROM foods " +
              "WHERE BINARY foods LIKE ? " +
-             "OR BINARY status LIKE ? " +
+             "OR BINARY status = ? " +        // ← exact match, no LIKE
              "OR CAST(id AS CHAR) LIKE ? " +
              "OR BINARY category LIKE ?";
                 PreparedStatement pst = DB.con.prepareStatement(sql);
                 pst.setString(1, "%" + search + "%");
-                pst.setString(2, "%" + search + "%");
+                pst.setString(2, search );
                 pst.setString(3, "%" + search + "%");
                 pst.setString(4, "%" + search + "%");
                 ResultSet rs = pst.executeQuery();
@@ -462,13 +508,24 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldSearchBarActionPerformed
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-          // TODO add your handling code here:
+        jPanel2.removeAll();
+        jPanel2.add(jPanelAddFunction);  // not jPanelSales!
+        jPanel2.repaint();
+        jPanel2.revalidate();
+          
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jbuttonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonLogoutActionPerformed
     new DashBoard().setVisible(true);
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jbuttonLogoutActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+        jPanel2.removeAll();
+        jPanel2.add(jPanelUpdateFunction);  // not jPanelSales!
+        jPanel2.repaint();
+        jPanel2.revalidate();
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private static double monthlyTotal = 0;
     private static double weeklyTotal = 0;
@@ -507,8 +564,11 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelAddFunction;
+    private javax.swing.JPanel jPanelDeleteFunction;
     private javax.swing.JPanel jPanelProduct;
     private javax.swing.JPanel jPanelSales;
+    private javax.swing.JPanel jPanelUpdateFunction;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
