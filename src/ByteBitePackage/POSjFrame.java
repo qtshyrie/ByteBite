@@ -624,7 +624,7 @@ public class POSjFrame extends javax.swing.JFrame {
 
     /**
      * @param args the command line arguments
-     */
+     */ 
     private void saveIndividualItem(String name, double price) {
         try {
             String sql = "INSERT INTO sales (Item Name, Price, Date) VALUES (?, ?, NOW())";
