@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package ByteBitePackage;
+package UI.newpackage;
 
+import UI.newpackage.DashBoard;
 import Conn.DatabaseConn.newpackage.DB;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,7 +35,7 @@ public class POSjFrame extends javax.swing.JFrame {
     public POSjFrame() {
         initComponents();
         setResizable(false);
-        DB.loadConnection("bytebitedb", "paul", "1234");
+        DB.loadConnection("bytebitedb", "root", "");
         DashBCartJList.setModel(cartModel);
         DashBJbtnDelList.addActionListener(e -> {
             DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
@@ -627,7 +628,7 @@ public class POSjFrame extends javax.swing.JFrame {
      */ 
     private void saveIndividualItem(String name, double price) {
         try {
-            String sql = "INSERT INTO sales (Item Name, Price, Date) VALUES (?, ?, NOW())";
+            String sql = "INSERT INTO sales (`Item Name`, Price, Date) VALUES (?, ?, NOW())";
             java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
             
             pst.setString(1, name);
