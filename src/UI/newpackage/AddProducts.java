@@ -4,6 +4,9 @@
  */
 package UI.newpackage;
 
+import Conn.DatabaseConn.newpackage.DB;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RAM
@@ -17,6 +20,7 @@ public class AddProducts extends javax.swing.JFrame {
      */
     public AddProducts() {
         initComponents();
+        DB.loadConnection("bytebitedb", "root", "");
     }
 
     /**
@@ -36,12 +40,12 @@ public class AddProducts extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        AddItemname = new javax.swing.JTextField();
+        Addprice = new javax.swing.JTextField();
+        AddComboBoxCategory = new javax.swing.JComboBox<>();
+        AddComboBoxStatus = new javax.swing.JComboBox<>();
+        Addcancel = new javax.swing.JButton();
+        AddButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,18 +71,21 @@ public class AddProducts extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("DejaVu Sans", 0, 12)); // NOI18N
         jLabel6.setText("Status");
 
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        AddItemname.addActionListener(this::AddItemnameActionPerformed);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "foods", "drinks", "sides" }));
+        Addprice.addActionListener(this::AddpriceActionPerformed);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Available", "Not Available" }));
+        AddComboBoxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "foods", "drinks", "sides" }));
 
-        jButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
-        jButton1.setText("Cancel");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        AddComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Available", "Not Available" }));
 
-        jButton2.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
-        jButton2.setText("Add");
+        Addcancel.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
+        Addcancel.setText("Cancel");
+        Addcancel.addActionListener(this::AddcancelActionPerformed);
+
+        AddButton.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
+        AddButton.setText("Add");
+        AddButton.addActionListener(this::AddButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,16 +107,16 @@ public class AddProducts extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField1)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, 130, Short.MAX_VALUE))
+                    .addComponent(Addprice)
+                    .addComponent(AddItemname)
+                    .addComponent(AddComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AddComboBoxStatus, 0, 130, Short.MAX_VALUE))
                 .addGap(82, 82, 82))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Addcancel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -124,23 +131,23 @@ public class AddProducts extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AddItemname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AddComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Addprice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AddComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Addcancel, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(32, 32, 32))
         );
 
@@ -159,14 +166,59 @@ public class AddProducts extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void AddpriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddpriceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_AddpriceActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void AddcancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddcancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_AddcancelActionPerformed
+
+    private void AddItemnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddItemnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddItemnameActionPerformed
+
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        try {
+        String product = AddItemname.getText().trim();
+        String category = AddComboBoxCategory.getSelectedItem().toString();
+        String status = AddComboBoxStatus.getSelectedItem().toString();
+        String priceText = Addprice.getText().trim();
+
+        // ✅ Validation
+        if (product.isEmpty() || priceText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields.");
+            return;
+        }
+
+        double price = Double.parseDouble(priceText);
+
+        String sql = "INSERT INTO foods (foods, category, price, status, path) VALUES (?, ?, ?, ?, NULL)";
+        java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
+
+        pst.setString(1, product);
+        pst.setString(2, category);
+        pst.setDouble(3, price);
+        pst.setString(4, status);
+
+        pst.executeUpdate();
+
+        // ✅ Success message
+        JOptionPane.showMessageDialog(this, "Product added successfully!");
+
+        // ✅ Clear fields after insert
+        AddItemname.setText("");
+        Addprice.setText("");
+        AddComboBoxCategory.setSelectedIndex(0);
+        AddComboBoxStatus.setSelectedIndex(0);
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid price format.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_AddButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,10 +246,12 @@ public class AddProducts extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton AddButton;
+    private javax.swing.JComboBox<String> AddComboBoxCategory;
+    private javax.swing.JComboBox<String> AddComboBoxStatus;
+    private javax.swing.JTextField AddItemname;
+    private javax.swing.JButton Addcancel;
+    private javax.swing.JTextField Addprice;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -206,7 +260,5 @@ public class AddProducts extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
