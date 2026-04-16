@@ -496,7 +496,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         // 3. Add a row to the sales table (jTable1)
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
+        String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
         model.addRow(new Object[]{"ID-" + (model.getRowCount() + 1), "POS Sale", amount, currentDate});
         
     }

@@ -300,9 +300,7 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(DashBJbtnDelList)
                 .addGap(30, 30, 30))
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+            .addComponent(jScrollPane3)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -657,35 +655,34 @@ public class POSjFrame extends javax.swing.JFrame {
     private boolean discountApplied = false;
     private void DashBJbtnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCheckoutActionPerformed
         
-    if (cartModel.isEmpty()) {
+   if (cartModel.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Cart is empty!");
         return;
     }
 
     try {
-        // Loop through every item currently in the cart
+        // Loop through every item in the JList cart
         for (int i = 0; i < cartModel.getSize(); i++) {
-            String itemLine = cartModel.getElementAt(i); // Format: "Burger - ₱150.0"
+            String itemLine = cartModel.getElementAt(i); 
             
-            // Split the string to get Name and Price separately
+            // This splits "Burger - ₱150.0" into "Burger" and "150.0"
             String[] parts = itemLine.split(" - ₱");
             String itemName = parts[0].trim();
             double itemPrice = Double.parseDouble(parts[1].trim());
 
-            // Save each specific item to the database
+            // Save each item individually to MySQL
             saveIndividualItem(itemName, itemPrice);
         }
 
-        // Clear UI after successful checkout
+        // Reset the POS screen for the next customer
         cartModel.clear();
         calculate();
-        
-        JOptionPane.showMessageDialog(null, "Transaction Complete!");
-        // Note: We removed the code that opens AdminDashboard so you stay on this screen.
+        JOptionPane.showMessageDialog(null, "Transaction Complete! Saved to Database.");
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error during checkout: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Checkout Error: " + e.getMessage());
     }
+
 
 
     }//GEN-LAST:event_DashBJbtnCheckoutActionPerformed
