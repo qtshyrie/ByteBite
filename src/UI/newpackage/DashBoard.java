@@ -29,19 +29,19 @@ public class DashBoard extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel1.setText("ByteBite");
 
-        jButtonAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ByteBitePackage/Admin.png"))); // NOI18N
+        jButtonAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/newpackage/Admin.png"))); // NOI18N
         jButtonAdmin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jButtonAdmin.addActionListener(this::jButtonAdminActionPerformed);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ByteBitePackage/3.png"))); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/newpackage/3.png"))); // NOI18N
         jButton6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ByteBitePackage/1.png"))); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/newpackage/1.png"))); // NOI18N
         jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jButton7.addActionListener(this::jButton7ActionPerformed);
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ByteBitePackage/2.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/newpackage/2.png"))); // NOI18N
         jButton8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jButton8.addActionListener(this::jButton8ActionPerformed);
 

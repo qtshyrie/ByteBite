@@ -24,8 +24,7 @@ public class AdminDashboard extends javax.swing.JFrame {
      */
     public AdminDashboard() {
         initComponents();
-        setResizable(false);
-        DB.loadConnection("bytebitedb", "root", ""); 
+        setResizable(false); 
         DisplayData();
     }
     
@@ -463,10 +462,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jbuttonProductsActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        jPanel2.removeAll();
-        jPanel2.add(jPanelDeleteFunction);  // not jPanelSales!
-        jPanel2.repaint();
-        jPanel2.revalidate();
+
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void textFieldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSearchBarActionPerformed
@@ -508,11 +504,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldSearchBarActionPerformed
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        jPanel2.removeAll();
-        jPanel2.add(jPanelAddFunction);  // not jPanelSales!
-        jPanel2.repaint();
-        jPanel2.revalidate();
-          
+        new AddProducts().setVisible(true);
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jbuttonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonLogoutActionPerformed
@@ -521,10 +513,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jbuttonLogoutActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        jPanel2.removeAll();
-        jPanel2.add(jPanelUpdateFunction);  // not jPanelSales!
-        jPanel2.repaint();
-        jPanel2.revalidate();
+        new UpdateProducts().setVisible(true);
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private static double monthlyTotal = 0;
