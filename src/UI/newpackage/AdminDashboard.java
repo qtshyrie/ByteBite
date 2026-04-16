@@ -88,9 +88,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanelDeleteFunction = new javax.swing.JPanel();
-        jPanelUpdateFunction = new javax.swing.JPanel();
-        jPanelAddFunction = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -389,56 +386,21 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanelSalesLayout.setHorizontalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanelSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         jPanelSalesLayout.setVerticalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSalesLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel2.add(jPanelSales, "card3");
-
-        javax.swing.GroupLayout jPanelDeleteFunctionLayout = new javax.swing.GroupLayout(jPanelDeleteFunction);
-        jPanelDeleteFunction.setLayout(jPanelDeleteFunctionLayout);
-        jPanelDeleteFunctionLayout.setHorizontalGroup(
-            jPanelDeleteFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1008, Short.MAX_VALUE)
-        );
-        jPanelDeleteFunctionLayout.setVerticalGroup(
-            jPanelDeleteFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(jPanelDeleteFunction, "card4");
-
-        javax.swing.GroupLayout jPanelUpdateFunctionLayout = new javax.swing.GroupLayout(jPanelUpdateFunction);
-        jPanelUpdateFunction.setLayout(jPanelUpdateFunctionLayout);
-        jPanelUpdateFunctionLayout.setHorizontalGroup(
-            jPanelUpdateFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1008, Short.MAX_VALUE)
-        );
-        jPanelUpdateFunctionLayout.setVerticalGroup(
-            jPanelUpdateFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(jPanelUpdateFunction, "card4");
-
-        javax.swing.GroupLayout jPanelAddFunctionLayout = new javax.swing.GroupLayout(jPanelAddFunction);
-        jPanelAddFunction.setLayout(jPanelAddFunctionLayout);
-        jPanelAddFunctionLayout.setHorizontalGroup(
-            jPanelAddFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1008, Short.MAX_VALUE)
-        );
-        jPanelAddFunctionLayout.setVerticalGroup(
-            jPanelAddFunctionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(jPanelAddFunction, "card4");
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 1010, 640));
 
@@ -449,6 +411,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void jButtonSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaleActionPerformed
         jPanel2.removeAll();
         jPanel2.add(jPanelSales);
+        updateSalesData(12);
         jPanel2.repaint();
         jPanel2.revalidate();       
     }//GEN-LAST:event_jButtonSaleActionPerformed
@@ -508,7 +471,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jbuttonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonLogoutActionPerformed
-    new DashBoard().setVisible(true);
+        new DashBoard().setVisible(true);
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jbuttonLogoutActionPerformed
 
@@ -535,6 +498,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date());
         model.addRow(new Object[]{"ID-" + (model.getRowCount() + 1), "POS Sale", amount, currentDate});
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
@@ -553,11 +517,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPanel jPanelAddFunction;
-    private javax.swing.JPanel jPanelDeleteFunction;
     private javax.swing.JPanel jPanelProduct;
     private javax.swing.JPanel jPanelSales;
-    private javax.swing.JPanel jPanelUpdateFunction;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

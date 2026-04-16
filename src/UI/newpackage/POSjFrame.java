@@ -9,6 +9,8 @@ import Conn.DatabaseConn.newpackage.DB;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,7 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.management.modelmbean.ModelMBean;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -35,6 +39,7 @@ public class POSjFrame extends javax.swing.JFrame {
     public POSjFrame() {
         initComponents();
         setResizable(false);
+        discountCombo.addActionListener(e -> calculate());
         DB.loadConnection("bytebitedb", "root", "");
         DashBCartJList.setModel(cartModel);
         DashBJbtnDelList.addActionListener(e -> {
@@ -91,18 +96,16 @@ public class POSjFrame extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        DashBJLabelPD = new javax.swing.JLabel();
         DashBJLabelTotal = new javax.swing.JLabel();
         DashBJLabelSB = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabelDiscountAmount = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         DashBCartJList = new javax.swing.JList<>();
         DashBJbtnDelList = new javax.swing.JButton();
-        jButtonDiscount = new javax.swing.JButton();
+        discountCombo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         jScrollPane2.setViewportView(jEditorPane1);
@@ -196,10 +199,6 @@ public class POSjFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         jLabel12.setText("Total");
 
-        DashBJLabelPD.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
-        DashBJLabelPD.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        DashBJLabelPD.setText("0");
-
         DashBJLabelTotal.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         DashBJLabelTotal.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         DashBJLabelTotal.setText("0");
@@ -214,9 +213,6 @@ public class POSjFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("0.12");
-
-        jLabel8.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        jLabel8.setText("PWD Discount:");
 
         jLabelDiscountAmount.setFont(new java.awt.Font("Sitka Text", 0, 14)); // NOI18N
         jLabelDiscountAmount.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -241,12 +237,10 @@ public class POSjFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel7))
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel8))
+                            .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addGroup(jPanelRecieptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabelDiscountAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(DashBJLabelPD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                             .addComponent(DashBJLabelSB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(17, 17, 17))
@@ -269,12 +263,8 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelRecieptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DashBJLabelPD))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelRecieptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
                     .addComponent(jLabelDiscountAmount))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                 .addGroup(jPanelRecieptLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(DashBJLabelTotal))
@@ -297,18 +287,17 @@ public class POSjFrame extends javax.swing.JFrame {
         DashBJbtnDelList.setText("Delete");
         DashBJbtnDelList.addActionListener(this::DashBJbtnDelListActionPerformed);
 
-        jButtonDiscount.setBackground(new java.awt.Color(102, 255, 102));
-        jButtonDiscount.setText("Discount");
-        jButtonDiscount.addActionListener(this::jButtonDiscountActionPerformed);
+        discountCombo.setBackground(new java.awt.Color(0, 255, 0));
+        discountCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Discount None", "Student Discount", "Senior Discount", "Pregnant Discount", "PWD Discount", "Employee Discount" }));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jButtonDiscount, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(16, 16, 16)
+                .addComponent(discountCombo, 0, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(DashBJbtnDelList)
                 .addGap(30, 30, 30))
             .addGroup(jPanel12Layout.createSequentialGroup()
@@ -320,10 +309,12 @@ public class POSjFrame extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DashBJbtnDelList)
-                    .addComponent(jButtonDiscount))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addComponent(DashBJbtnDelList)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(discountCombo))
+                .addContainerGap())
         );
 
         rightpanel.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 39, 240, -1));
@@ -378,14 +369,44 @@ public class POSjFrame extends javax.swing.JFrame {
                     subTotal += Double.parseDouble(parts[1].trim());
                 } catch (Exception ex) {}
             }
-            
+
             double tax = subTotal * 0.12;
-            double discount = discountApplied ? subTotal * 0.05 : 0; 
+
+            // 🔽 GET SELECTED DISCOUNT
+            String selectedDiscount = discountCombo.getSelectedItem().toString();
+
+            double discountRate = 0;
+
+            switch (selectedDiscount) {
+                case "Discount None":
+                    discountRate = 0; // 5%
+                    break;
+                case "Student Discount":
+                    discountRate = 0.05; // 5%
+                    break;
+                case "PWD Discount":
+                    discountRate = 0.20; // 20%
+                    break;
+                case "Senior Discount":
+                    discountRate = 0.20; // 20%
+                    break;
+                case "Employee Discount":
+                    discountRate = 0.05; // 5%
+                    break;
+                case "Pregnant Discount":
+                    discountRate = 0.10; // 20%
+                    break;
+                default:
+                    discountRate = 0;
+            }
+
+            double discount = subTotal * discountRate;
             double total = subTotal + tax - discount;
 
-            DashBJLabelSB.setText(String.valueOf(subTotal));
-            jLabelDiscountAmount.setText(discountApplied ? "5%" : "0");
-            DashBJLabelTotal.setText(String.valueOf(total));
+            // 🔽 DISPLAY VALUES
+            DashBJLabelSB.setText(String.format("%.2f", subTotal));
+            jLabelDiscountAmount.setText((int)(discountRate * 100) + "%");
+            DashBJLabelTotal.setText(String.format("%.2f", total));
         }
     
     
@@ -421,14 +442,34 @@ public class POSjFrame extends javax.swing.JFrame {
             while (rs.next()) {
                 String name = rs.getString("foods");
                 double price = rs.getDouble("price");
+                String imagePath = rs.getString("path");
 
+                // Create panel
                 JPanel DrinkPanel = new JPanel(new BorderLayout());
                 DrinkPanel.setBackground(new Color(102, 102, 102));
                 DrinkPanel.setPreferredSize(new Dimension(180, 235));
 
-                JLabel DrinkLabel = new JLabel(name + "- ₱" + price, JLabel.CENTER);
+                // 🔽 IMAGE LABEL (TOP)
+                JLabel imageLabel = new JLabel();
+                imageLabel.setPreferredSize(new Dimension(180, 140));
+
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/" + imagePath));
+                    Image img = icon.getImage();
+
+                    Image scaledImg = img.getScaledInstance(
+                            180, 140,   // match label size
+                            Image.SCALE_SMOOTH
+                    );
+
+                    imageLabel.setIcon(new ImageIcon(scaledImg));
+                }
+
+                // 🔽 TEXT (CENTER)
+                JLabel DrinkLabel = new JLabel(name + " - ₱" + price, JLabel.CENTER);
                 DrinkLabel.setForeground(Color.WHITE);
 
+                // 🔽 BUTTON (BOTTOM)
                 JButton DrinkButton = new JButton("Add");
 
                 DrinkButton.addActionListener(e -> {
@@ -436,6 +477,8 @@ public class POSjFrame extends javax.swing.JFrame {
                     calculate();
                 });
 
+                // 🔽 ADD COMPONENTS TO PANEL
+                DrinkPanel.add(imageLabel, BorderLayout.NORTH);
                 DrinkPanel.add(DrinkLabel, BorderLayout.CENTER);
                 DrinkPanel.add(DrinkButton, BorderLayout.SOUTH);
 
@@ -478,11 +521,27 @@ public class POSjFrame extends javax.swing.JFrame {
             while (rs.next()) {
                 String name = rs.getString("foods");
                 double price = rs.getDouble("price");
+                String imagePath = rs.getString("path");
 
                 JPanel DrinkPanel = new JPanel(new BorderLayout());
                 DrinkPanel.setBackground(new Color(102, 102, 102));
                 DrinkPanel.setPreferredSize(new Dimension(180, 235));
+                
+                JLabel imageLabel = new JLabel();
+                imageLabel.setPreferredSize(new Dimension(180, 140));
+                
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/" + imagePath));
+                    Image img = icon.getImage();
 
+                    Image scaledImg = img.getScaledInstance(
+                            180, 140,   // match label size
+                            Image.SCALE_SMOOTH
+                    );
+
+                    imageLabel.setIcon(new ImageIcon(scaledImg));
+                }
+                
                 JLabel DrinkLabel = new JLabel(name + "- ₱" + price, JLabel.CENTER);
                 DrinkLabel.setForeground(Color.WHITE);
 
@@ -493,6 +552,7 @@ public class POSjFrame extends javax.swing.JFrame {
                     calculate();
                 });
 
+                DrinkPanel.add(imageLabel, BorderLayout.NORTH);
                 DrinkPanel.add(DrinkLabel, BorderLayout.CENTER);
                 DrinkPanel.add(DrinkButton, BorderLayout.SOUTH);
 
@@ -530,21 +590,40 @@ public class POSjFrame extends javax.swing.JFrame {
             while (rs.next()) {
                 String name = rs.getString("foods");
                 double price = rs.getDouble("price");
+                String imagePath = rs.getString("path");
 
                 JPanel DrinkPanel = new JPanel(new BorderLayout());
                 DrinkPanel.setBackground(new Color(102, 102, 102));
                 DrinkPanel.setPreferredSize(new Dimension(180, 235));
+                
+                JLabel imageLabel = new JLabel();
+                imageLabel.setPreferredSize(new Dimension(180, 140));
+                
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/" + imagePath));
+                    Image img = icon.getImage();
 
+                    Image scaledImg = img.getScaledInstance(
+                            180, 140,   // match label size
+                            Image.SCALE_SMOOTH
+                    );
+
+                    imageLabel.setIcon(new ImageIcon(scaledImg));
+                }
+                
                 JLabel DrinkLabel = new JLabel(name + "- ₱" + price, JLabel.CENTER);
                 DrinkLabel.setForeground(Color.WHITE);
-
+                DrinkLabel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+                DrinkLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+                
                 JButton DrinkButton = new JButton("Add");
-
+                
                 DrinkButton.addActionListener(e -> {
                     cartModel.addElement(name + " - ₱" + price);
                     calculate();
                 });
 
+                DrinkPanel.add(imageLabel, BorderLayout.NORTH);
                 DrinkPanel.add(DrinkLabel, BorderLayout.CENTER);
                 DrinkPanel.add(DrinkButton, BorderLayout.SOUTH);
 
@@ -576,18 +655,6 @@ public class POSjFrame extends javax.swing.JFrame {
         // TODO add your handling code here:  
     }//GEN-LAST:event_DashBJbtnDelListActionPerformed
     private boolean discountApplied = false;
-    private void jButtonDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDiscountActionPerformed
-         discountApplied = !discountApplied; // toggle
-
-    if (discountApplied) {
-        jLabelDiscountAmount.setText("5%");
-    } else {
-        jLabelDiscountAmount.setText("0");
-    }
-
-    calculate();
-    }//GEN-LAST:event_jButtonDiscountActionPerformed
-
     private void DashBJbtnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCheckoutActionPerformed
         
     if (cartModel.isEmpty()) {
@@ -658,7 +725,6 @@ public class POSjFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> DashBCartJList;
-    private javax.swing.JLabel DashBJLabelPD;
     private javax.swing.JLabel DashBJLabelSB;
     private javax.swing.JLabel DashBJLabelTotal;
     private javax.swing.JButton DashBJbtnCancel;
@@ -670,7 +736,7 @@ public class POSjFrame extends javax.swing.JFrame {
     private javax.swing.JButton DashBJbtnSides;
     private javax.swing.JPanel NestedMiddlePanel;
     private javax.swing.JPanel centerpanel;
-    private javax.swing.JButton jButtonDiscount;
+    private javax.swing.JComboBox<String> discountCombo;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -682,7 +748,6 @@ public class POSjFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabelDiscountAmount;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;

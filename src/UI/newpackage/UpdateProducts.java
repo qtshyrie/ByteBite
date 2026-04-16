@@ -4,6 +4,10 @@
  */
 package UI.newpackage;
 
+import Conn.DatabaseConn.newpackage.DB;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RAM
@@ -42,6 +46,8 @@ public class UpdateProducts extends javax.swing.JFrame {
         UpdComboBoxStatus = new javax.swing.JComboBox<>();
         UpdButtonCancel = new javax.swing.JButton();
         UpdButtonUpdate = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        UpdID = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +85,10 @@ public class UpdateProducts extends javax.swing.JFrame {
 
         UpdButtonUpdate.setFont(new java.awt.Font("DejaVu Sans", 0, 14)); // NOI18N
         UpdButtonUpdate.setText("Update");
+        UpdButtonUpdate.addActionListener(this::UpdButtonUpdateActionPerformed);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 12)); // NOI18N
+        jLabel1.setText("Id");
 
         javax.swing.GroupLayout UpdPanelLayout = new javax.swing.GroupLayout(UpdPanel);
         UpdPanel.setLayout(UpdPanelLayout);
@@ -92,25 +102,27 @@ public class UpdateProducts extends javax.swing.JFrame {
                 .addGap(112, 112, 112))
             .addComponent(jSeparator11)
             .addGroup(UpdPanelLayout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel31)
-                    .addComponent(jLabel51)
-                    .addComponent(jLabel41)
-                    .addComponent(jLabel61))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(UpdTextFieldPrice)
-                    .addComponent(UpdTextField)
-                    .addComponent(UpdComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(UpdComboBoxStatus, 0, 130, Short.MAX_VALUE))
-                .addGap(82, 82, 82))
-            .addGroup(UpdPanelLayout.createSequentialGroup()
                 .addGap(134, 134, 134)
                 .addComponent(UpdButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(UpdButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(UpdPanelLayout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel51)
+                    .addComponent(jLabel41)
+                    .addComponent(jLabel61)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(UpdTextFieldPrice)
+                    .addComponent(UpdTextField)
+                    .addComponent(UpdComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(UpdComboBoxStatus, 0, 130, Short.MAX_VALUE)
+                    .addComponent(UpdID))
+                .addGap(82, 82, 82))
         );
         UpdPanelLayout.setVerticalGroup(
             UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,23 +133,27 @@ public class UpdateProducts extends javax.swing.JFrame {
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
-                    .addComponent(UpdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(UpdID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel41)
-                    .addComponent(UpdComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(UpdTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel51)
-                    .addComponent(UpdTextFieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel41, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(UpdComboBoxCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel51, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(UpdTextFieldPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel61)
                     .addComponent(UpdComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(UpdButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addComponent(UpdButtonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -167,6 +183,47 @@ public class UpdateProducts extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_UpdButtonCancelActionPerformed
+
+    private void UpdButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdButtonUpdateActionPerformed
+        try {
+        String idText = UpdID.getText().trim(); // your new ID field
+        String product = UpdTextField.getText().trim();
+        String category = UpdComboBoxCategory.getSelectedItem().toString();
+        String status = UpdComboBoxStatus.getSelectedItem().toString();
+        String priceText = UpdTextFieldPrice.getText().trim();
+
+        // ✅ Validation
+        if (idText.isEmpty() || product.isEmpty() || priceText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields including ID.");
+            return;
+        }
+
+        int id = Integer.parseInt(idText);
+        double price = Double.parseDouble(priceText);
+
+        String sql = "UPDATE foods SET foods = ?, category = ?, price = ?, status = ? WHERE id = ?";
+        PreparedStatement pst = DB.con.prepareStatement(sql);
+
+        pst.setString(1, product);
+        pst.setString(2, category);
+        pst.setDouble(3, price);
+        pst.setString(4, status);
+        pst.setInt(5, id); // 🔥 this is the key
+
+        int rowsUpdated = pst.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(this, "Product updated successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "No product found with that ID.");
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid ID or price format.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_UpdButtonUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,9 +255,11 @@ public class UpdateProducts extends javax.swing.JFrame {
     private javax.swing.JButton UpdButtonUpdate;
     private javax.swing.JComboBox<String> UpdComboBoxCategory;
     private javax.swing.JComboBox<String> UpdComboBoxStatus;
+    private javax.swing.JTextField UpdID;
     private javax.swing.JPanel UpdPanel;
     private javax.swing.JTextField UpdTextField;
     private javax.swing.JTextField UpdTextFieldPrice;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel31;
