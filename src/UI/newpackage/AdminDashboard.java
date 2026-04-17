@@ -55,7 +55,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
     }
     
-    public void loadTable() {
+   public void loadTable() {
     DefaultTableModel model = (DefaultTableModel) jTableProducts.getModel();
     model.setRowCount(0); 
 
@@ -74,7 +74,48 @@ public class AdminDashboard extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Table Load Error: " + e.getMessage());
     }
 }
+   
+public void refreshDashboardData() {
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
+String user = "root";
+
+try (Connection cn = DriverManager.getConnection(url, user, "")) {
     
+    // LOAD THE TOTALS ---
+    
+    // Daily
+    String queryDaily = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE Date = CURDATE()";
+    try (PreparedStatement psDaily = cn.prepareStatement(queryDaily);
+         ResultSet rsDaily = psDaily.executeQuery()) {
+        // Added the ₱ symbol right before the %.2f
+        if (rsDaily.next()) lblDailySales.setText(String.format("₱ %.2f", rsDaily.getDouble(1)));
+    }
+
+    // Weekly
+    String queryWeekly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE YEARWEEK(Date, 1) = YEARWEEK(CURDATE(), 1)";
+    try (PreparedStatement psWeekly = cn.prepareStatement(queryWeekly);
+         ResultSet rsWeekly = psWeekly.executeQuery()) {
+        if (rsWeekly.next()) lblWeeklySales.setText(String.format("₱ %.2f", rsWeekly.getDouble(1)));
+    }
+
+    // Monthly
+    String queryMonthly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE MONTH(Date) = MONTH(CURDATE()) AND YEAR(Date) = YEAR(CURDATE())";
+    try (PreparedStatement psMonthly = cn.prepareStatement(queryMonthly);
+         ResultSet rsMonthly = psMonthly.executeQuery()) {
+        if (rsMonthly.next()) lblMonthlySales.setText(String.format("₱ %.2f", rsMonthly.getDouble(1)));
+    }
+
+    // Yearly
+    String queryYearly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE YEAR(Date) = YEAR(CURDATE())";
+    try (PreparedStatement psYearly = cn.prepareStatement(queryYearly);
+         ResultSet rsYearly = psYearly.executeQuery()) {
+        if (rsYearly.next()) lblYearlySales.setText(String.format("₱ %.2f", rsYearly.getDouble(1)));
+    }
+
+} catch (SQLException e) {
+    JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
