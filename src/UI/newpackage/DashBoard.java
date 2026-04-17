@@ -1,6 +1,13 @@
 package UI.newpackage;
+import Conn.DatabaseConn.newpackage.DB;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import java.sql.Statement;
 
-import UI.newpackage.AdminLoginJFrame;
 
 public class DashBoard extends javax.swing.JFrame {
 

@@ -13,8 +13,7 @@ public class AdminLoginJFrame extends javax.swing.JFrame {
 
     public AdminLoginJFrame() {
         initComponents();
-        DB.loadConnection("bytebitedb", "root", "");
-        DB.loadConnection("bytebitedb", "paul", "1234");
+        DB.loadConnection("newbytebitedb", "root", "");
         setResizable(false);
         
     }

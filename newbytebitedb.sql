@@ -46,6 +46,11 @@ INSERT INTO `accounts` (`id`, `username`, `password`) VALUES
 -- Table structure for table `foods`
 --
 
+SELECT SUM(Price) FROM sales WHERE Date = CURDATE();
+SELECT SUM(Price) FROM sales WHERE YEARWEEK(Date, 1) = YEARWEEK(CURDATE(), 1);
+SELECT SUM(Price) FROM sales WHERE MONTH(Date) = MONTH(CURDATE()) AND YEAR(Date) = YEAR(CURDATE());
+SELECT SUM(Price) FROM sales WHERE YEAR(Date) = YEAR(CURDATE());
+
 CREATE TABLE `foods` (
   `id` int(255) NOT NULL,
   `foods` varchar(255) NOT NULL,

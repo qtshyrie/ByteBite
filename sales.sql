@@ -24,16 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sales`
---
-
-CREATE TABLE `sales` (
-  `ID` int(255) NOT NULL,
-  `Item Name` varchar(255) NOT NULL,
-  `Price` int(255) NOT NULL,
-  `Date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-COMMIT;
+-- Table structure 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

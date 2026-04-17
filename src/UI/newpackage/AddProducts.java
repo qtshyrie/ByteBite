@@ -20,7 +20,7 @@ public class AddProducts extends javax.swing.JFrame {
      */
     public AddProducts() {
         initComponents();
-        DB.loadConnection("bytebitedb", "root", "");
+        DB.loadConnection("newbytebitedb", "root", "");
     }
 
     /**

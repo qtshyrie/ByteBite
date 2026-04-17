@@ -40,7 +40,7 @@ public class POSjFrame extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         discountCombo.addActionListener(e -> calculate());
-        DB.loadConnection("bytebitedb", "root", "");
+        DB.loadConnection("newbytebitedb", "root", "");
         DashBCartJList.setModel(cartModel);
         DashBJbtnDelList.addActionListener(e -> {
             DefaultListModel<String> model = (DefaultListModel<String>) DashBCartJList.getModel();
@@ -289,6 +289,7 @@ public class POSjFrame extends javax.swing.JFrame {
 
         discountCombo.setBackground(new java.awt.Color(0, 255, 0));
         discountCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Discount None", "Student Discount", "Senior Discount", "Pregnant Discount", "PWD Discount", "Employee Discount" }));
+        discountCombo.addActionListener(this::discountComboActionPerformed);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -331,8 +332,7 @@ public class POSjFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(centerpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(rightpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(460, 460, 460)
                 .addComponent(jLabel1)
@@ -456,7 +456,7 @@ public class POSjFrame extends javax.swing.JFrame {
                     Image img = icon.getImage();
 
                     Image scaledImg = img.getScaledInstance(
-                            180, 140,   // match label size
+                            210, 140,   // match label size
                             Image.SCALE_SMOOTH
                     );
 
@@ -533,7 +533,7 @@ public class POSjFrame extends javax.swing.JFrame {
                     Image img = icon.getImage();
 
                     Image scaledImg = img.getScaledInstance(
-                            180, 140,   // match label size
+                            210, 140,   // match label size
                             Image.SCALE_SMOOTH
                     );
 
@@ -602,7 +602,7 @@ public class POSjFrame extends javax.swing.JFrame {
                     Image img = icon.getImage();
 
                     Image scaledImg = img.getScaledInstance(
-                            180, 140,   // match label size
+                            210, 140,   // match label size
                             Image.SCALE_SMOOTH
                     );
 
@@ -654,45 +654,51 @@ public class POSjFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DashBJbtnDelListActionPerformed
     private boolean discountApplied = false;
     private void DashBJbtnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DashBJbtnCheckoutActionPerformed
-        
    if (cartModel.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Cart is empty!");
         return;
     }
 
     try {
-        // Loop through every item in the JList cart
+        // Loop through every item currently in the cart
         for (int i = 0; i < cartModel.getSize(); i++) {
-            String itemLine = cartModel.getElementAt(i); 
+            String itemLine = cartModel.getElementAt(i); // Format: "Burger - ₱150.0"
             
-            // This splits "Burger - ₱150.0" into "Burger" and "150.0"
+            // Split the string to get Name and Price separately
             String[] parts = itemLine.split(" - ₱");
             String itemName = parts[0].trim();
             double itemPrice = Double.parseDouble(parts[1].trim());
 
-            // Save each item individually to MySQL
+            // Save each specific item to the database
             saveIndividualItem(itemName, itemPrice);
         }
 
-        // Reset the POS screen for the next customer
+        // Clear UI after successful checkout
         cartModel.clear();
         calculate();
-        JOptionPane.showMessageDialog(null, "Transaction Complete! Saved to Database.");
+        
+        JOptionPane.showMessageDialog(null, "Transaction Complete!");
+        // Note: We removed the code that opens AdminDashboard so you stay on this screen.
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Checkout Error: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error during checkout: " + e.getMessage());
     }
 
 
 
+
     }//GEN-LAST:event_DashBJbtnCheckoutActionPerformed
+
+    private void discountComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discountComboActionPerformed
 
     /**
      * @param args the command line arguments
      */ 
     private void saveIndividualItem(String name, double price) {
         try {
-            String sql = "INSERT INTO sales (`Item Name`, Price, Date) VALUES (?, ?, NOW())";
+            String sql = "INSERT INTO sales (`Item`, Price, Date) VALUES (?, ?, NOW())";
             java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
             
             pst.setString(1, name);

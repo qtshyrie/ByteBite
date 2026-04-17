@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import java.sql.Statement;
 
 /**
  *
@@ -26,6 +27,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         initComponents();
         setResizable(false); 
         DisplayData();
+        refreshDashboardData();
     }
     
     private void DisplayData(){
@@ -48,12 +50,76 @@ public class AdminDashboard extends javax.swing.JFrame {
                     };
                     model.addRow(row);
                 }
+                
+                
                 jTableProduct.setModel(model);
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
             }
     }
+    
+public void loadTable() {
+    DefaultTableModel model = (DefaultTableModel) jTableProducts.getModel();
+    model.setRowCount(0); 
+
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
+    String user = "root";
+    
+    try (Connection cn = DriverManager.getConnection(url, user, "");
+         PreparedStatement psTable = cn.prepareStatement("SELECT * FROM sales");
+         ResultSet rsTable = psTable.executeQuery()) {
+
+        while (rsTable.next()) {
+            model.addRow(new Object[]{rsTable.getString(1), rsTable.getString(2), rsTable.getDouble(3), rsTable.getString(4)});
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Table Load Error: " + e.getMessage());
+    }
+}
+   
+public void refreshDashboardData() {
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
+String user = "root";
+
+try (Connection cn = DriverManager.getConnection(url, user, "")) {
+    
+    // LOAD THE TOTALS ---
+    
+    // Daily
+    String queryDaily = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE Date = CURDATE()";
+    try (PreparedStatement psDaily = cn.prepareStatement(queryDaily);
+         ResultSet rsDaily = psDaily.executeQuery()) {
+        // Added the ₱ symbol right before the %.2f
+        if (rsDaily.next()) lblDailySales.setText(String.format("₱ %.2f", rsDaily.getDouble(1)));
+    }
+
+    // Weekly
+    String queryWeekly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE YEARWEEK(Date, 1) = YEARWEEK(CURDATE(), 1)";
+    try (PreparedStatement psWeekly = cn.prepareStatement(queryWeekly);
+         ResultSet rsWeekly = psWeekly.executeQuery()) {
+        if (rsWeekly.next()) lblWeeklySales.setText(String.format("₱ %.2f", rsWeekly.getDouble(1)));
+    }
+
+    // Monthly
+    String queryMonthly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE MONTH(Date) = MONTH(CURDATE()) AND YEAR(Date) = YEAR(CURDATE())";
+    try (PreparedStatement psMonthly = cn.prepareStatement(queryMonthly);
+         ResultSet rsMonthly = psMonthly.executeQuery()) {
+        if (rsMonthly.next()) lblMonthlySales.setText(String.format("₱ %.2f", rsMonthly.getDouble(1)));
+    }
+
+    // Yearly
+    String queryYearly = "SELECT IFNULL(SUM(Price), 0) FROM sales WHERE YEAR(Date) = YEAR(CURDATE())";
+    try (PreparedStatement psYearly = cn.prepareStatement(queryYearly);
+         ResultSet rsYearly = psYearly.executeQuery()) {
+        if (rsYearly.next()) lblYearlySales.setText(String.format("₱ %.2f", rsYearly.getDouble(1)));
+    }
+
+} catch (SQLException e) {
+    JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,18 +142,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableProduct = new javax.swing.JTable();
         jPanelSales = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        lblMonthlySales = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        lblWeeklySales = new javax.swing.JLabel();
+        lblYearlySales = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        lblWeeklySales = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        lblMonthlySales = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
         lblDailySales = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -251,153 +316,174 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel2.add(jPanelProduct, "card2");
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setBackground(new java.awt.Color(235, 229, 229));
+        jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jPanel3.setBackground(new java.awt.Color(102, 204, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.blue, null, null));
+        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jLabel2.setText("Total Monthly Sales");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 72)); // NOI18N
+        jLabel2.setText("SALES SUMMARY");
 
-        lblMonthlySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        lblMonthlySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblMonthlySales.setText("0");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 106, Short.MAX_VALUE)
-                .addComponent(jLabel2))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblMonthlySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(117, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblMonthlySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(93, 93, 93))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel5.setBackground(new java.awt.Color(153, 255, 153));
-        jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.green, null, null));
+        jPanel5.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Yearly Sales", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Times New Roman", 1, 48))); // NOI18N
+        jPanel5.setName(""); // NOI18N
+        jPanel5.setPreferredSize(new java.awt.Dimension(327, 206));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jLabel3.setText("Total Weekly Sales");
-
-        lblWeeklySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        lblWeeklySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblWeeklySales.setText("0");
+        lblYearlySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblYearlySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblYearlySales.setText("0");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(0, 117, Short.MAX_VALUE)
-                .addComponent(jLabel3))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(lblYearlySales, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(lblWeeklySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addComponent(lblYearlySales, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel6.setBackground(new java.awt.Color(255, 153, 153));
-        jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.red, null, null));
+        jPanel6.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Weekly Sales", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Times New Roman", 1, 48))); // NOI18N
+        jPanel6.setPreferredSize(new java.awt.Dimension(327, 206));
 
-        lblDailySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        lblDailySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDailySales.setText("0");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jLabel5.setText("Total Daily Sales");
+        lblWeeklySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblWeeklySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblWeeklySales.setText("0");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 139, Short.MAX_VALUE)
-                .addComponent(jLabel5))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDailySales, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(lblWeeklySales, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDailySales, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addComponent(lblWeeklySales, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        jPanel7.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Monthly Sales", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Times New Roman", 1, 48))); // NOI18N
+        jPanel7.setPreferredSize(new java.awt.Dimension(327, 206));
+
+        lblMonthlySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblMonthlySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblMonthlySales.setText("0");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblMonthlySales, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addComponent(lblMonthlySales, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Daily Sales", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Times New Roman", 1, 48))); // NOI18N
 
-            },
-            new String [] {
-                "ID", "Item Name", "Price", "Date"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        lblDailySales.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblDailySales.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDailySales.setText("0");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblDailySales, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addComponent(lblDailySales, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(109, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
+        );
 
         javax.swing.GroupLayout jPanelSalesLayout = new javax.swing.GroupLayout(jPanelSales);
         jPanelSales.setLayout(jPanelSalesLayout);
         jPanelSalesLayout.setHorizontalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanelSalesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelSalesLayout.setVerticalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelSalesLayout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanelSales, "card3");
@@ -409,11 +495,13 @@ public class AdminDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaleActionPerformed
-        jPanel2.removeAll();
+      jPanel2.removeAll();
         jPanel2.add(jPanelSales);
-        updateSalesData(12);
+        
+        loadTable(); 
+        
         jPanel2.repaint();
-        jPanel2.revalidate();       
+        jPanel2.revalidate();    
     }//GEN-LAST:event_jButtonSaleActionPerformed
 
     private void jbuttonProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonProductsActionPerformed
@@ -479,27 +567,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         new UpdateProducts().setVisible(true);
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
-    private static double monthlyTotal = 0;
-    private static double weeklyTotal = 0;
-    private static double dailyTotal = 0;
-
-    public void updateSalesData(double amount) {
-        // 1. Increment totals
-        monthlyTotal += amount;
-        weeklyTotal += amount;
-        dailyTotal += amount;
-
-        // 2. Update the labels (using your specific variable names)
-        lblMonthlySales.setText(String.format("%.2f", monthlyTotal));
-        lblWeeklySales.setText(String.format("%.2f", weeklyTotal));
-        lblDailySales.setText(String.format("%.2f", dailyTotal));
-
-        // 3. Add a row to the sales table (jTable1)
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-        model.addRow(new Object[]{"ID-" + (model.getRowCount() + 1), "POS Sale", amount, currentDate});
-        
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
@@ -507,8 +575,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButtonUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelAdminDashboard;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -516,13 +582,13 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelProduct;
     private javax.swing.JPanel jPanelSales;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableProduct;
     private javax.swing.JTable jTableProducts;
     private javax.swing.JButton jbuttonLogout;
@@ -530,6 +596,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lblDailySales;
     private javax.swing.JLabel lblMonthlySales;
     private javax.swing.JLabel lblWeeklySales;
+    private javax.swing.JLabel lblYearlySales;
     private java.awt.TextField textFieldSearchBar;
     // End of variables declaration//GEN-END:variables
 }
