@@ -54,6 +54,27 @@ public class AdminDashboard extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
             }
     }
+    
+    public void loadTable() {
+    DefaultTableModel model = (DefaultTableModel) jTableProducts.getModel();
+    model.setRowCount(0); 
+
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
+    String user = "root";
+    
+    try (Connection cn = DriverManager.getConnection(url, user, "");
+         PreparedStatement psTable = cn.prepareStatement("SELECT * FROM sales");
+         ResultSet rsTable = psTable.executeQuery()) {
+
+        while (rsTable.next()) {
+            model.addRow(new Object[]{rsTable.getString(1), rsTable.getString(2), rsTable.getDouble(3), rsTable.getString(4)});
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Table Load Error: " + e.getMessage());
+    }
+}
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -425,7 +446,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jbuttonProductsActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-
+        new Delete().setVisible(true);
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void textFieldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSearchBarActionPerformed

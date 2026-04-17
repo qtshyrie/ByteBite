@@ -191,7 +191,7 @@ public class AddProducts extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
         }
-
+  
         double price = Double.parseDouble(priceText);
 
         String sql = "INSERT INTO foods (foods, category, price, status, path) VALUES (?, ?, ?, ?, NULL)";
