@@ -513,7 +513,8 @@ try (Connection cn = DriverManager.getConnection(url, user, "")) {
     }//GEN-LAST:event_jbuttonProductsActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-
+new Delete().setVisible(true);
+        
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void textFieldSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSearchBarActionPerformed
