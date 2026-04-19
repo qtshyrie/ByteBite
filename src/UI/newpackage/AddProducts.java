@@ -46,6 +46,8 @@ public class AddProducts extends javax.swing.JFrame {
         AddComboBoxStatus = new javax.swing.JComboBox<>();
         Addcancel = new javax.swing.JButton();
         AddButton = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jTextFieldIMG = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +89,9 @@ public class AddProducts extends javax.swing.JFrame {
         AddButton.setText("Add");
         AddButton.addActionListener(this::AddButtonActionPerformed);
 
+        jLabel7.setFont(new java.awt.Font("DejaVu Sans", 0, 12)); // NOI18N
+        jLabel7.setText("Img");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -104,13 +109,15 @@ public class AddProducts extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(Addprice)
                     .addComponent(AddItemname)
                     .addComponent(AddComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AddComboBoxStatus, 0, 130, Short.MAX_VALUE))
+                    .addComponent(AddComboBoxStatus, 0, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldIMG))
                 .addGap(82, 82, 82))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(131, 131, 131)
@@ -144,7 +151,11 @@ public class AddProducts extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(AddComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextFieldIMG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Addcancel, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -185,7 +196,7 @@ public class AddProducts extends javax.swing.JFrame {
         String category = AddComboBoxCategory.getSelectedItem().toString();
         String status = AddComboBoxStatus.getSelectedItem().toString();
         String priceText = Addprice.getText().trim();
-
+        String foodImage = jTextFieldIMG.getText().trim();
         // ✅ Validation
         if (product.isEmpty() || priceText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields.");
@@ -194,13 +205,14 @@ public class AddProducts extends javax.swing.JFrame {
   
         double price = Double.parseDouble(priceText);
 
-        String sql = "INSERT INTO foods (foods, category, price, status, path) VALUES (?, ?, ?, ?, NULL)";
+        String sql = "INSERT INTO foods (foods, category, price, status, path) VALUES (?, ?, ?, ?, ?)";
         java.sql.PreparedStatement pst = DB.con.prepareStatement(sql);
 
         pst.setString(1, product);
         pst.setString(2, category);
         pst.setDouble(3, price);
         pst.setString(4, status);
+        pst.setString(5, foodImage);
 
         pst.executeUpdate();
 
@@ -212,6 +224,7 @@ public class AddProducts extends javax.swing.JFrame {
         Addprice.setText("");
         AddComboBoxCategory.setSelectedIndex(0);
         AddComboBoxStatus.setSelectedIndex(0);
+        jTextFieldIMG.setText("");
 
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Invalid price format.");
@@ -258,7 +271,9 @@ public class AddProducts extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextFieldIMG;
     // End of variables declaration//GEN-END:variables
 }
