@@ -63,7 +63,7 @@ public void loadTable() {
     DefaultTableModel model = (DefaultTableModel) jTableProducts.getModel();
     model.setRowCount(0); 
 
-    String url = "jdbc:mysql://localhost:3306/bytebitedb";
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
     String user = "root";
     
     try (Connection cn = DriverManager.getConnection(url, user, "");
@@ -80,7 +80,7 @@ public void loadTable() {
 }
    
 public void refreshDashboardData() {
-    String url = "jdbc:mysql://localhost:3306/bytebitedb";
+    String url = "jdbc:mysql://localhost:3306/newbytebitedb";
 String user = "root";
 
 try (Connection cn = DriverManager.getConnection(url, user, "")) {

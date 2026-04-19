@@ -198,7 +198,7 @@ public class AddProducts extends javax.swing.JFrame {
         String priceText = Addprice.getText().trim();
         String foodImage = jTextFieldIMG.getText().trim();
         // ✅ Validation
-        if (product.isEmpty() || priceText.isEmpty()) {
+        if (product.isEmpty() || priceText.isEmpty() || foodImage.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
         }
@@ -212,7 +212,7 @@ public class AddProducts extends javax.swing.JFrame {
         pst.setString(2, category);
         pst.setDouble(3, price);
         pst.setString(4, status);
-        pst.setString(5, foodImage);
+        pst.setString(5, "IMG/newpackage/" + foodImage);
 
         pst.executeUpdate();
 

@@ -204,7 +204,7 @@ public class UpdateProducts extends javax.swing.JFrame {
         String priceText = UpdTextFieldPrice.getText().trim();
         String ImagePath = jTextField1.getText().trim();
         // ✅ Validation
-        if (idText.isEmpty() || product.isEmpty() || priceText.isEmpty()) {
+        if (idText.isEmpty() || product.isEmpty() || priceText.isEmpty() || ImagePath.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields including ID.");
             return;
         }
@@ -219,7 +219,7 @@ public class UpdateProducts extends javax.swing.JFrame {
         pst.setString(2, category);
         pst.setDouble(3, price);
         pst.setString(4, status);
-        pst.setString(5, ImagePath);
+        pst.setString(5, "IMG/newpackage/" + ImagePath);
         pst.setInt(6, id); // 🔥 this is the key
         
         int rowsUpdated = pst.executeUpdate();
