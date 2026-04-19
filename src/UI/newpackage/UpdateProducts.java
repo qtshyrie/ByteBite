@@ -48,6 +48,8 @@ public class UpdateProducts extends javax.swing.JFrame {
         UpdButtonUpdate = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         UpdID = new javax.swing.JTextField();
+        jLabel62 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,6 +92,9 @@ public class UpdateProducts extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 12)); // NOI18N
         jLabel1.setText("Id");
 
+        jLabel62.setFont(new java.awt.Font("DejaVu Sans", 0, 12)); // NOI18N
+        jLabel62.setText("Status");
+
         javax.swing.GroupLayout UpdPanelLayout = new javax.swing.GroupLayout(UpdPanel);
         UpdPanel.setLayout(UpdPanelLayout);
         UpdPanelLayout.setHorizontalGroup(
@@ -114,14 +119,16 @@ public class UpdateProducts extends javax.swing.JFrame {
                     .addComponent(jLabel51)
                     .addComponent(jLabel41)
                     .addComponent(jLabel61)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel62))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(UpdTextFieldPrice)
                     .addComponent(UpdTextField)
                     .addComponent(UpdComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(UpdComboBoxStatus, 0, 130, Short.MAX_VALUE)
-                    .addComponent(UpdID))
+                    .addComponent(UpdID)
+                    .addComponent(jTextField1))
                 .addGap(82, 82, 82))
         );
         UpdPanelLayout.setVerticalGroup(
@@ -153,6 +160,10 @@ public class UpdateProducts extends javax.swing.JFrame {
                 .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel61)
                     .addComponent(UpdComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel62)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(UpdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(UpdButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
@@ -191,7 +202,7 @@ public class UpdateProducts extends javax.swing.JFrame {
         String category = UpdComboBoxCategory.getSelectedItem().toString();
         String status = UpdComboBoxStatus.getSelectedItem().toString();
         String priceText = UpdTextFieldPrice.getText().trim();
-
+        String ImagePath = jTextField1.getText().trim();
         // ✅ Validation
         if (idText.isEmpty() || product.isEmpty() || priceText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields including ID.");
@@ -201,15 +212,16 @@ public class UpdateProducts extends javax.swing.JFrame {
         int id = Integer.parseInt(idText);
         double price = Double.parseDouble(priceText);
 
-        String sql = "UPDATE foods SET foods = ?, category = ?, price = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE foods SET foods = ?, category = ?, price = ?, status = ?, path = ? WHERE id = ?";
         PreparedStatement pst = DB.con.prepareStatement(sql);
 
         pst.setString(1, product);
         pst.setString(2, category);
         pst.setDouble(3, price);
         pst.setString(4, status);
-        pst.setInt(5, id); // 🔥 this is the key
-
+        pst.setString(5, ImagePath);
+        pst.setInt(6, id); // 🔥 this is the key
+        
         int rowsUpdated = pst.executeUpdate();
 
         if (rowsUpdated > 0) {
@@ -266,6 +278,8 @@ public class UpdateProducts extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
     private javax.swing.JSeparator jSeparator11;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
